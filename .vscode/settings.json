@@ -1,0 +1,31 @@
+{
+    "cSpell.words": [
+        "ASPNETCORE",
+        "Jenkinsfile",
+        "Jenkisfile",
+        "dockerignore",
+        "eclint",
+        "editorconfig",
+        "gitattributes",
+        "microservice",
+        "symlink",
+        "wwwroot"
+    ],
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#e9856a",
+        "activityBar.activeBorder": "#acf3bb",
+        "activityBar.background": "#e9856a",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#acf3bb",
+        "activityBarBadge.foreground": "#15202b",
+        "statusBar.background": "#e3613d",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#cf441e",
+        "titleBar.activeBackground": "#e3613d",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#e3613d99",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#e3613d"
+}
