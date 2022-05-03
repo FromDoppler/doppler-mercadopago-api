@@ -30,8 +30,6 @@ namespace Doppler.HelloMicroservice
             services.AddDopplerSecurity();
             services.AddControllers();
             services.AddCors();
-            services.AddSingleton<Weather.IWeatherForecastService, Weather.WeatherForecastService>();
-            services.AddSingleton<Weather.DataService>();
             services.AddSwaggerGen(c =>
             {
                 c.AddSecurityDefinition("Bearer",
@@ -54,7 +52,7 @@ namespace Doppler.HelloMicroservice
                         }
                     });
 
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Doppler.HelloMicroservice", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Doppler.MercadoPagoApi", Version = "v1" });
 
                 var baseUrl = Configuration.GetValue<string>("BaseURL");
                 if (!string.IsNullOrEmpty(baseUrl))
@@ -70,7 +68,7 @@ namespace Doppler.HelloMicroservice
             app.UseProblemDetails();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Doppler.HelloMicroservice v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Doppler.MercadoPagoApi v1"));
 
             app.UseStaticFiles();
 
