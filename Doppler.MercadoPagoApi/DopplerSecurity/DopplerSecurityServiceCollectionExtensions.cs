@@ -1,4 +1,4 @@
-using Doppler.HelloMicroservice.DopplerSecurity;
+using Doppler.MercadoPagoApi.DopplerSecurity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;

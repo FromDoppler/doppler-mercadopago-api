@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System;
 using Hellang.Middleware.ProblemDetails;
 using MercadoPago.Config;
 
-namespace Doppler.HelloMicroservice
+namespace Doppler.MercadoPagoApi
 {
     public class Startup
     {
@@ -31,8 +26,6 @@ namespace Doppler.HelloMicroservice
             services.AddDopplerSecurity();
             services.AddControllers();
             services.AddCors();
-            services.AddSingleton<Weather.IWeatherForecastService, Weather.WeatherForecastService>();
-            services.AddSingleton<Weather.DataService>();
             services.AddSwaggerGen(c =>
             {
                 c.AddSecurityDefinition("Bearer",
@@ -55,7 +48,7 @@ namespace Doppler.HelloMicroservice
                         }
                     });
 
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Doppler.HelloMicroservice", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Doppler.MercadoPagoApi", Version = "v1" });
 
                 var baseUrl = Configuration.GetValue<string>("BaseURL");
                 if (!string.IsNullOrEmpty(baseUrl))
@@ -72,7 +65,7 @@ namespace Doppler.HelloMicroservice
             app.UseProblemDetails();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Doppler.HelloMicroservice v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Doppler.MercadoPagoApi v1"));
 
             app.UseStaticFiles();
 

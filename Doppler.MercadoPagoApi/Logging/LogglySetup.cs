@@ -1,10 +1,8 @@
-using Loggly;
 using Loggly.Config;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System;
 
-namespace Doppler.HelloMicroservice.Logging
+namespace Doppler.MercadoPagoApi.Logging
 {
     public static class LogglySetup
     {

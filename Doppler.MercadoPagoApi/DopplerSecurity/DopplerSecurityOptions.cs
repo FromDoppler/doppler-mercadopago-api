@@ -1,7 +1,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 
-namespace Doppler.HelloMicroservice.DopplerSecurity
+namespace Doppler.MercadoPagoApi.DopplerSecurity
 {
     public class DopplerSecurityOptions
     {

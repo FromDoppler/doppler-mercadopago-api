@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Doppler.HelloMicroservice": {
+    "Doppler.MercadoPagoApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
