@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Net.Http;
 
-namespace Doppler.HelloMicroservice
+namespace Doppler.MercadoPagoApi
 {
     public static class HttpResponseMessageExtensions
     {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
 
-namespace Doppler.HelloMicroservice.Logging
+namespace Doppler.MercadoPagoApi.Logging
 {
     public static class SerilogSetup
     {

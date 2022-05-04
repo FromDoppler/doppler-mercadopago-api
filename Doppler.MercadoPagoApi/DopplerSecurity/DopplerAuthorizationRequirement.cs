@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace Doppler.HelloMicroservice.DopplerSecurity
+namespace Doppler.MercadoPagoApi.DopplerSecurity
 {
     public class DopplerAuthorizationRequirement : IAuthorizationRequirement
     {

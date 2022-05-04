@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-namespace Doppler.HelloMicroservice.DopplerSecurity
+namespace Doppler.MercadoPagoApi.DopplerSecurity
 {
     public class ConfigureDopplerSecurityOptions : IConfigureOptions<DopplerSecurityOptions>
     {

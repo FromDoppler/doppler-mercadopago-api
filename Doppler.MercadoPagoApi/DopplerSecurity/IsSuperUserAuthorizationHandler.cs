@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Doppler.HelloMicroservice.DopplerSecurity
+namespace Doppler.MercadoPagoApi.DopplerSecurity
 {
     public class IsSuperUserAuthorizationHandler : AuthorizationHandler<DopplerAuthorizationRequirement>
     {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Doppler.HelloMicroservice
+namespace Doppler.MercadoPagoApi
 {
     public class IntegrationTest1
         : IClassFixture<WebApplicationFactory<Startup>>

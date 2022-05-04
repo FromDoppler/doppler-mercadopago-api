@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 
-namespace Doppler.HelloMicroservice
+namespace Doppler.MercadoPagoApi
 {
     public class Startup
     {

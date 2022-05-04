@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 
-namespace Doppler.HelloMicroservice.DopplerSecurity
+namespace Doppler.MercadoPagoApi.DopplerSecurity
 {
     public class IsOwnResourceAuthorizationHandler : AuthorizationHandler<DopplerAuthorizationRequirement>
     {

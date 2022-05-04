@@ -1,4 +1,4 @@
-namespace Doppler.HelloMicroservice.DopplerSecurity
+namespace Doppler.MercadoPagoApi.DopplerSecurity
 {
     public static class Policies
     {

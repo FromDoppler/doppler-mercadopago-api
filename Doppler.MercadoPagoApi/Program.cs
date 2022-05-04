@@ -1,10 +1,10 @@
-using Doppler.HelloMicroservice.Logging;
+using Doppler.MercadoPagoApi.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace Doppler.HelloMicroservice
+namespace Doppler.MercadoPagoApi
 {
     public class Program
     {
