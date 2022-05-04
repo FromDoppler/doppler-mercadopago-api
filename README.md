@@ -1,3 +1,3 @@
 # mercadopago-api
 
-an api to manage payments made with MercadoPago
+API for processing payments with Mercado Pago.
