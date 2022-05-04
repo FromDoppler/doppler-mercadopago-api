@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using Hellang.Middleware.ProblemDetails;
+using MercadoPago.Config;
 
 namespace Doppler.MercadoPagoApi
 {
@@ -54,6 +56,7 @@ namespace Doppler.MercadoPagoApi
                     c.AddServer(new OpenApiServer() { Url = baseUrl });
                 };
             });
+            MercadoPagoConfig.AccessToken = Configuration["MercadoPago:AccessToken"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
