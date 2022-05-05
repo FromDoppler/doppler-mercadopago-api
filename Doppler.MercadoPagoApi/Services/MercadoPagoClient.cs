@@ -15,7 +15,7 @@ namespace Doppler.MercadoPagoApi.Services
             _customerClient = new CustomerClient();
         }
 
-        public async Task<Customer> CreateCustomerClientAsync(CustomerRequest request)
+        public async Task<Customer> CreateCustomerAsync(CustomerRequest request)
         {
             return await _customerClient.CreateAsync(request);
         }

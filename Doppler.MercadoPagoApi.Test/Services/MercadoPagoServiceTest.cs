@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Doppler.HelloMicroservice.Services
+namespace Doppler.MercadoPagoApi.Services
 {
     public class MercadoPagoServiceTest
     {
@@ -47,7 +47,7 @@ namespace Doppler.HelloMicroservice.Services
             _ = _mercadoPagoService.CreateCustomerAsync(new CustomerDto());
 
             // Assert
-            _mpClient.Verify(mpc => mpc.CreateCustomerClientAsync(It.IsAny<CustomerRequest>()), Times.Once());
+            _mpClient.Verify(mpc => mpc.CreateCustomerAsync(It.IsAny<CustomerRequest>()), Times.Once());
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace Doppler.HelloMicroservice.Services
             _ = _mercadoPagoService.CreateCustomerAsync(new CustomerDto());
 
             //Assert
-            _mpClient.Verify(mpc => mpc.CreateCustomerClientAsync(It.IsAny<CustomerRequest>()), Times.Never);
+            _mpClient.Verify(mpc => mpc.CreateCustomerAsync(It.IsAny<CustomerRequest>()), Times.Never);
             _mpClient.Verify(mpc => mpc.SearchCustomerAsync(It.IsAny<SearchRequest>()), Times.Once);
         }
 

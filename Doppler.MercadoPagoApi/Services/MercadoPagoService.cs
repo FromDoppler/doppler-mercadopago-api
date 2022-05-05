@@ -38,7 +38,7 @@ namespace Doppler.MercadoPagoApi.Services
                 FirstName = customer.FirstName,
                 LastName = customer.LastName
             };
-            return await _mpClient.CreateCustomerClientAsync(customerRequest);
+            return await _mpClient.CreateCustomerAsync(customerRequest);
         }
 
         public async Task<Customer> GetCustomerByEmailAsync(string email)
