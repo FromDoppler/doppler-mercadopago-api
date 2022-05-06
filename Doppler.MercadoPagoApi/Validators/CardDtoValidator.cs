@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Doppler.MercadoPagoApi.Validators
 {
-    public class CardValidator: AbstractValidator<Card>
+    public class CardDtoValidator: AbstractValidator<CardDto>
     {   
-        public CardValidator()
+        public CardDtoValidator()
         {
             RuleFor(x => x.SecurityCode).MaximumLength(4).NotEmpty();
             RuleFor(x => x.CardNumber).CreditCard().NotEmpty();
