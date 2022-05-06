@@ -6,8 +6,8 @@ namespace Doppler.MercadoPagoApi.Validators
     {   
         public CardDtoValidator()
         {
-            RuleFor(x => x.SecurityCode).MaximumLength(4).NotEmpty();
-            RuleFor(x => x.CardNumber).CreditCard().NotEmpty();
+            RuleFor(x => x.SecurityCode).MaximumLength(4).MinimumLength(3).NotEmpty().WithMessage("Invalid security code");
+            RuleFor(x => x.CardNumber).CreditCard().NotEmpty().WithMessage("Invalid card number");
         }
     }
 }
