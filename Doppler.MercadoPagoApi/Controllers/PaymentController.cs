@@ -1,8 +1,11 @@
 using Doppler.MercadoPagoApi.DopplerSecurity;
 using Doppler.MercadoPagoApi.Models;
 using Doppler.MercadoPagoApi.Services;
+using MercadoPago.Client.Customer;
+using MercadoPago.Error;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Doppler.MercadoPagoApi.Controllers
@@ -19,11 +22,37 @@ namespace Doppler.MercadoPagoApi.Controllers
         }
 
         [Authorize(Policies.OWN_RESOURCE_OR_SUPERUSER)]
-        [HttpPost("/customers/{customername}")]
-        public async Task<IActionResult> CreateCustomerAsync(CreateCustomerRequest request)
+        [HttpPost("/accounts/{accountname}/customer")]
+        public async Task<IActionResult> CreateCustomerAsync([FromRoute] string accountname, CustomerDto customer)
         {
-            var customer = await _mercadoPagoService.CreateCustomerAsync(request.Customer);
-            return Ok(new { CustomerId = customer.Id});
+            var customerRequest = new CustomerRequest
+            {
+                Email = accountname,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName
+            };
+            try {
+                var savedCustomer = await _mercadoPagoService.CreateCustomerAsync(customerRequest);
+                return Ok(new { CustomerId = savedCustomer.Id });
+            }
+            catch (MercadoPagoApiException exception)
+            {
+                return BadRequest(exception.ApiError);
+            }
+            catch(Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [Authorize(Policies.OWN_RESOURCE_OR_SUPERUSER)]
+        [HttpGet("/accounts/{accountname}/customer")]
+        public async Task<IActionResult> GetCustomerAsync([FromRoute] string accountname)
+        {
+            var savedCustomer = await _mercadoPagoService.GetCustomerByEmailAsync(accountname);
+            if (string.IsNullOrEmpty(savedCustomer.Id))
+                return NoContent();
+            return Ok(new { CustomerId = savedCustomer.Id });
         }
     }
 }
