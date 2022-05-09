@@ -10,7 +10,7 @@ namespace Doppler.MercadoPagoApi.Validators
             RuleFor(x => x.Installments).NotEmpty().Equal(1).WithMessage("Invalid or empty Installments");
             RuleFor(x => x.PaymentMethodId).NotEmpty().WithMessage("Invalid or empty PaymentMethodId").Custom((element, context) =>
             {
-                if(element != "amex" && element != "visa" && element != "master")
+                if (element != "amex" && element != "visa" && element != "master")
                 {
                     context.AddFailure("Invalid PaymentMethodId");
                 }
