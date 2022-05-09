@@ -89,7 +89,7 @@ namespace Doppler.MercadoPagoApi
         }
 
         [Fact]
-        public void Should_have_not_error_when_expiration_year_is_not_empty()
+        public void Should_not_have_error_when_expiration_year_is_not_empty()
         {
             var cardDto = new CardDto { ExpirationYear = "2026" };
             var result = _validator.TestValidate(cardDto);
