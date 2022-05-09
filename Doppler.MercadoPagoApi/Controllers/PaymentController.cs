@@ -40,10 +40,6 @@ namespace Doppler.MercadoPagoApi.Controllers
             {
                 return BadRequest(exception.ApiError);
             }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
         }
     }
 }
