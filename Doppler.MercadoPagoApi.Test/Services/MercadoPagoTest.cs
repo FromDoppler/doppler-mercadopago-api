@@ -66,7 +66,12 @@ namespace Doppler.MercadoPagoApi.Services
         public async Task POST_sendPayment_returns_OkStatusCode_when_request_success()
         {
             // Arrange
-            var payment = new Payment { Id = 1, Status = "approved", StatusDetail = "accredited" };
+            var payment = new Payment
+            {
+                Id = 1,
+                Status = "approved",
+                StatusDetail = "accredited"
+            };
 
             var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
             mercadoPagoServiceMock.Setup(s => s.CreateTokenAsync(It.IsAny<CardDto>()))
