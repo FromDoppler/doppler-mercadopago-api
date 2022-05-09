@@ -31,7 +31,8 @@ namespace Doppler.MercadoPagoApi.Controllers
                 FirstName = customer.FirstName,
                 LastName = customer.LastName
             };
-            try {
+            try
+            {
                 var savedCustomer = await _mercadoPagoService.CreateCustomerAsync(customerRequest);
                 return Ok(new { CustomerId = savedCustomer.Id });
             }
@@ -39,20 +40,10 @@ namespace Doppler.MercadoPagoApi.Controllers
             {
                 return BadRequest(exception.ApiError);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
-        }
-
-        [Authorize(Policies.OWN_RESOURCE_OR_SUPERUSER)]
-        [HttpGet("/accounts/{accountname}/customer")]
-        public async Task<IActionResult> GetCustomerAsync([FromRoute] string accountname)
-        {
-            var savedCustomer = await _mercadoPagoService.GetCustomerByEmailAsync(accountname);
-            if (string.IsNullOrEmpty(savedCustomer.Id))
-                return NoContent();
-            return Ok(new { CustomerId = savedCustomer.Id });
         }
     }
 }

@@ -7,6 +7,5 @@ namespace Doppler.MercadoPagoApi.Services
     public interface IMercadoPagoService
     {
         Task<Customer> CreateCustomerAsync(CustomerRequest request);
-        Task<Customer> GetCustomerByEmailAsync(string email);
     }
 }

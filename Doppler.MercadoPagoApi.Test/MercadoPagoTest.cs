@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -53,7 +52,7 @@ namespace Doppler.MercadoPagoApi
             var validCustomerDto = GetValidCustomerDto();
 
             _mercadoPagoService.Setup(mps => mps.CreateCustomerAsync(It.IsAny<CustomerRequest>()))
-                .ReturnsAsync(GetValidCustomer()) ;
+                .ReturnsAsync(GetValidCustomer());
 
             var request = new HttpRequestMessage(HttpMethod.Post, _customerEndpoint)
             {
@@ -65,9 +64,9 @@ namespace Doppler.MercadoPagoApi
 
             // Assert
             var content = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeAnonymousType(content, new { CustomerId = ""});
+            var result = JsonConvert.DeserializeAnonymousType(content, new { CustomerId = "" });
 
-            Assert.Equal(HttpStatusCode.OK,response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Matches(_validId, result.CustomerId);
         }
 
@@ -75,8 +74,8 @@ namespace Doppler.MercadoPagoApi
         public async Task Create_customer_async_should_return_bad_request_when_customer_exist()
         {
             // Arrange
-            var mpresponse = new MercadoPago.Http.MercadoPagoResponse(400,new Dictionary<string,string>(),"Client already exists");
-            var mpException = new MercadoPagoApiException("Error response from SDK",mpresponse);
+            var mpresponse = new MercadoPago.Http.MercadoPagoResponse(400, new Dictionary<string, string>(), "Client already exists");
+            var mpException = new MercadoPagoApiException("Error response from SDK", mpresponse);
 
             _mercadoPagoService.Setup(mps => mps.CreateCustomerAsync(It.IsAny<CustomerRequest>()))
                 .ThrowsAsync(mpException);
@@ -86,50 +85,15 @@ namespace Doppler.MercadoPagoApi
                 Headers = { { "Authorization", $"Bearer {TOKEN_ACCOUNT_123_TEST1_AT_TEST_DOT_COM_EXPIRE_20330518}" } },
                 Content = JsonContent.Create(GetValidCustomerDto()),
             };
-            // Act
 
+            // Act
             var response = await _client.SendAsync(request);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact]
-        public async Task Get_customer_async_should_return_customer_id_when_exists()
-        {
-            // Arrange
-            _mercadoPagoService.Setup(mps => mps.GetCustomerByEmailAsync(_testEmail))
-                .ReturnsAsync(GetValidCustomer());
-            var request = new HttpRequestMessage(HttpMethod.Get, _customerEndpoint)
-            {
-                Headers = { { "Authorization", $"Bearer {TOKEN_ACCOUNT_123_TEST1_AT_TEST_DOT_COM_EXPIRE_20330518}" } }
-            };
-            //Act
-            var response = await _client.SendAsync(request);
-            // Assert
-            var content = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeAnonymousType(content, new { CustomerId = "" });
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(_validId, result.CustomerId);
-        }
-
-        [Fact]
-        public async Task Get_customer_async_should_return_no_content_when_customer_not_exists()
-        {
-            // Arrange
-            _mercadoPagoService.Setup(mps => mps.GetCustomerByEmailAsync(_testEmail))
-                .ReturnsAsync(new Customer());
-            var request = new HttpRequestMessage(HttpMethod.Get, _customerEndpoint)
-            {
-                Headers = { { "Authorization", $"Bearer {TOKEN_ACCOUNT_123_TEST1_AT_TEST_DOT_COM_EXPIRE_20330518}" } }
-            };
-            // Act
-            var response = await _client.SendAsync(request);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-        }
 
         private CustomerDto GetValidCustomerDto()
         {
