@@ -8,11 +8,14 @@ namespace Doppler.MercadoPagoApi
     {
         private readonly PaymentRequestDtoValidator _validator = new();
 
-        [Fact]
-        public void Should_have_error_when_installments_are_different_than_one()
+        [Theory]
+        [InlineData(5)]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void Should_have_error_when_installments_are_different_than_one(int quantity)
         {
             //Arrange
-            var paymentRequestDto = new PaymentRequestDto { Installments = 5 };
+            var paymentRequestDto = new PaymentRequestDto { Installments = quantity };
 
             //Act
             var result = _validator.TestValidate(paymentRequestDto);
@@ -32,19 +35,6 @@ namespace Doppler.MercadoPagoApi
 
             //Assert
             result.ShouldNotHaveValidationErrorFor(x => x.Installments);
-        }
-
-        [Fact]
-        public void Should_have_error_when_installments_are_empty()
-        {
-            //Arrange
-            var paymentRequestDto = new PaymentRequestDto { };
-
-            //Act
-            var result = _validator.TestValidate(paymentRequestDto);
-
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.Installments);
         }
 
         [Fact]
@@ -99,11 +89,14 @@ namespace Doppler.MercadoPagoApi
             result.ShouldHaveValidationErrorFor(x => x.TransactionAmount);
         }
 
-        [Fact]
-        public void Should_not_have_error_when_payment_method_id_is_visa()
+        [Theory]
+        [InlineData("visa")]
+        [InlineData("master")]
+        [InlineData("amex")]
+        public void Should_not_have_error_when_payment_method_id_is_valid(string method)
         {
             //Arrange
-            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = "visa" };
+            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = method };
 
             //Act
             var result = _validator.TestValidate(paymentRequestDto);
@@ -112,50 +105,14 @@ namespace Doppler.MercadoPagoApi
             result.ShouldNotHaveValidationErrorFor(x => x.PaymentMethodId);
         }
 
-        [Fact]
-        public void Should_not_have_error_when_payment_method_id_is_master()
+        [Theory]
+        [InlineData("dopplercard")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Should_have_error_when_payment_method_id_is_invalid(string method)
         {
             //Arrange
-            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = "master" };
-
-            //Act
-            var result = _validator.TestValidate(paymentRequestDto);
-
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.PaymentMethodId);
-        }
-
-        [Fact]
-        public void Should_not_have_error_when_payment_method_id_is_amex()
-        {
-            //Arrange
-            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = "amex" };
-
-            //Act
-            var result = _validator.TestValidate(paymentRequestDto);
-
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.PaymentMethodId);
-        }
-
-        [Fact]
-        public void Should_have_error_when_payment_method_id_is_invalid()
-        {
-            //Arrange
-            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = "dopplercard" };
-
-            //Act
-            var result = _validator.TestValidate(paymentRequestDto);
-
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.PaymentMethodId);
-        }
-
-        [Fact]
-        public void Should_have_error_when_payment_method_id_is_empty()
-        {
-            //Arrange
-            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = "" };
+            var paymentRequestDto = new PaymentRequestDto { PaymentMethodId = method };
 
             //Act
             var result = _validator.TestValidate(paymentRequestDto);
