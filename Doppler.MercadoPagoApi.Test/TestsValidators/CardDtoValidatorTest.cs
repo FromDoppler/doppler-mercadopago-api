@@ -13,13 +13,13 @@ namespace Doppler.MercadoPagoApi
         [InlineData("1234")]
         public void Should_not_have_error_when_security_code_has_three_or_four_numbers(string securityCode)
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { SecurityCode = securityCode };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldNotHaveValidationErrorFor(x => x.SecurityCode);
         }
 
@@ -29,42 +29,42 @@ namespace Doppler.MercadoPagoApi
         [InlineData(null)]
         public void Should_have_error_when_security_code_is_invalid_or_empty(string securityCode)
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { SecurityCode = securityCode };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldHaveValidationErrorFor(x => x.SecurityCode);
         }
 
         [Theory]
-        [InlineData("5031755734530604")]
+        [InlineData("5030604")]
         [InlineData("")]
         [InlineData(null)]
-        public void Should_have_error_when_card_number_is_empty(string cardNumber)
+        public void Should_have_error_when_card_number_is_invalid_or_empty(string cardNumber)
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { CardNumber = cardNumber };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldHaveValidationErrorFor(x => x.CardNumber);
         }
 
         [Fact]
         public void Should_not_have_error_when_card_number_is_valid()
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { CardNumber = "5031755734530604" };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldNotHaveValidationErrorFor(x => x.CardNumber);
         }
 
@@ -73,26 +73,26 @@ namespace Doppler.MercadoPagoApi
         [InlineData(null)]
         public void Should_have_error_when_expiration_month_is_empty(string expirationMonth)
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { ExpirationMonth = expirationMonth };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldHaveValidationErrorFor(x => x.ExpirationMonth);
         }
 
         [Fact]
         public void Should_not_have_error_when_expiration_month_is_not_empty()
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { ExpirationMonth = "10" };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldNotHaveValidationErrorFor(x => x.ExpirationMonth);
         }
 
@@ -101,26 +101,26 @@ namespace Doppler.MercadoPagoApi
         [InlineData(null)]
         public void Should_have_error_when_expiration_year_is_empty(string year)
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { ExpirationYear = year };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldHaveValidationErrorFor(x => x.ExpirationYear);
         }
 
         [Fact]
         public void Should_not_have_error_when_expiration_year_is_not_empty()
         {
-            //Arrange
+            // Arrange
             var cardDto = new CardDto { ExpirationYear = "2026" };
 
-            //Act
+            // Act
             var result = _validator.TestValidate(cardDto);
 
-            //Assert
+            // Assert
             result.ShouldNotHaveValidationErrorFor(x => x.ExpirationYear);
         }
     }
