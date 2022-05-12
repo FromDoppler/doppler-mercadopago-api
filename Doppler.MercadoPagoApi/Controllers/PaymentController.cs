@@ -31,6 +31,7 @@ namespace Doppler.MercadoPagoApi.Controllers
                 var paymentRequestCreated = new PaymentCreateRequest
                 {
                     TransactionAmount = paymentRequestDto.TransactionAmount,
+                    StatementDescriptor = paymentRequestDto.TransactionDescription,
                     Token = cardToken.Id,
                     Installments = paymentRequestDto.Installments,
                     PaymentMethodId = paymentRequestDto.PaymentMethodId,
