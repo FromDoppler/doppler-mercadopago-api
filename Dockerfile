@@ -29,7 +29,7 @@ RUN dotnet test
 FROM build AS publish
 RUN dotnet publish "./Doppler.MercadoPagoApi/Doppler.MercadoPagoApi.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.4-bullseye-slim AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.5-bullseye-slim AS final
 # We need these changes in openssl.cnf to access to our SQL Server instances in QA and INT environments
 # See more information in https://stackoverflow.com/questions/56473656/cant-connect-to-sql-server-named-instance-from-asp-net-core-running-in-docker/59391426#59391426
 RUN sed -i 's/DEFAULT@SECLEVEL=2/DEFAULT@SECLEVEL=1/g' /etc/ssl/openssl.cnf
