@@ -7,5 +7,6 @@ namespace Doppler.MercadoPagoApi.Models
         public CardDto Card { get; set; }
         public int Installments { get; set; }
         public string PaymentMethodId { get; set; }
+        public string Description { get; set; }
     }
 }

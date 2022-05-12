@@ -39,6 +39,7 @@ namespace Doppler.MercadoPagoApi.Controllers
                     {
                         Email = accountname,
                     },
+                    Description = paymentRequestDto.Description
                 };
 
                 var paymentResponse = await _mercadoPagoService.CreatePaymentAsync(paymentRequestCreated);
