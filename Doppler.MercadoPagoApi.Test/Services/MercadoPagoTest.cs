@@ -26,14 +26,16 @@ namespace Doppler.MercadoPagoApi.Services
 
         private readonly PaymentRequestDto _paymentRequestDto;
         private readonly string _accountname;
-        private readonly string _url;
+        private readonly string _postUrl;
+        private readonly string _getUrl;
         private readonly CardToken _cardToken;
 
         public MercadoPagoTest(WebApplicationFactory<Startup> factory)
         {
             _factory = factory;
             _accountname = "test1@test.com";
-            _url = $"/accounts/{_accountname}/payment";
+            _postUrl = $"/accounts/{_accountname}/payment";
+            _getUrl = $"/accounts/{_accountname}/payment/1234567890";
             _cardToken = new CardToken { Id = "123asd" };
 
             #region paymentRequestDto sample
@@ -89,7 +91,7 @@ namespace Doppler.MercadoPagoApi.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
 
             // Act
-            var response = await client.PostAsJsonAsync(_url, _paymentRequestDto);
+            var response = await client.PostAsJsonAsync(_postUrl, _paymentRequestDto);
             var result = await response.Content.ReadFromJsonAsync<PaymentResponseDto>();
 
             // Assert
@@ -117,7 +119,7 @@ namespace Doppler.MercadoPagoApi.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
 
             // Act
-            var response = await client.PostAsJsonAsync(_url, _paymentRequestDto);
+            var response = await client.PostAsJsonAsync(_postUrl, _paymentRequestDto);
 
             // Assert
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
@@ -145,7 +147,81 @@ namespace Doppler.MercadoPagoApi.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
 
             // Act
-            var response = await client.PostAsJsonAsync(_url, _paymentRequestDto);
+            var response = await client.PostAsJsonAsync(_postUrl, _paymentRequestDto);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GET_getPayment_returns_OkStatusCode_when_paymentId_exists()
+        {
+            // Arrange
+            var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
+            mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
+                .ReturnsAsync(new Payment());
+
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddSingleton(mercadoPagoServiceMock.Object);
+                });
+            }).CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
+
+            // Act
+            var response = await client.GetAsync(_getUrl);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GET_getPayment_returns_NotFoundStatusCode_when_paymentId_not_exists()
+        {
+            // Arrange
+            var mpResponse = new MercadoPago.Http.MercadoPagoResponse(404, new Dictionary<string, string>(), "");
+
+            var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
+            mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
+                .ThrowsAsync(new MercadoPagoApiException("", mpResponse));
+
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddSingleton(mercadoPagoServiceMock.Object);
+                });
+            }).CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
+
+            // Act
+            var response = await client.GetAsync(_getUrl);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GET_getPayment_returns_internalServerErrorStatusCode_when_unexpectedExceptions_occurs()
+        {
+            // Arrange
+            var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
+            mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
+                .ThrowsAsync(new Exception());
+
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddSingleton(mercadoPagoServiceMock.Object);
+                });
+            }).CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
+
+            // Act
+            var response = await client.PostAsJsonAsync(_postUrl, _paymentRequestDto);
 
             // Assert
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
