@@ -1,5 +1,6 @@
 using Doppler.MercadoPagoApi.Models;
 using MercadoPago.Client.Payment;
+using MercadoPago.Error;
 using MercadoPago.Resource.CardToken;
 using MercadoPago.Resource.Payment;
 using Microsoft.Extensions.Configuration;
@@ -32,9 +33,22 @@ namespace Doppler.MercadoPagoApi.Services
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuration["MercadoPago:AccessToken"]}");
             var response = await client.PostAsJsonAsync(_configuration["MercadoPago:CreateTokenService"], card);
-            var cardToken = await response.Content.ReadFromJsonAsync<CardToken>();
 
-            return cardToken;
+            if (response.IsSuccessStatusCode)
+            {
+                var cardToken = await response.Content.ReadFromJsonAsync<CardToken>();
+                return cardToken;
+            }
+            else
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiError>();
+                var exception = new MercadoPagoApiException("Failed at creating card token", null)
+                {
+                    ApiError = result
+                };
+
+                throw exception;
+            }
         }
 
         public async Task<Payment> GetPaymentAsync(long paymentId)
