@@ -1,5 +1,6 @@
 using Doppler.MercadoPagoApi.Services;
 using Hellang.Middleware.ProblemDetails;
+using MercadoPago.Client.Payment;
 using MercadoPago.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace Doppler.MercadoPagoApi
             services.AddFluentValidation();
             services.AddCors();
             services.AddSingleton<IMercadoPagoService, MercadoPagoService>();
+            services.AddSingleton<PaymentClient>();
             services.AddSwaggerGen(c =>
             {
                 c.AddSecurityDefinition("Bearer",
