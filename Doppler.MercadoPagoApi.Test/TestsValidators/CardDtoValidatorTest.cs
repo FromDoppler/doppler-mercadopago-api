@@ -1,6 +1,7 @@
 using Xunit;
 using FluentValidation.TestHelper;
 using Doppler.MercadoPagoApi.Validators;
+using Doppler.MercadoPagoApi.Models;
 
 namespace Doppler.MercadoPagoApi
 {

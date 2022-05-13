@@ -1,6 +1,7 @@
 using Xunit;
 using FluentValidation.TestHelper;
 using Doppler.MercadoPagoApi.Validators;
+using Doppler.MercadoPagoApi.Models;
 
 namespace Doppler.MercadoPagoApi
 {
@@ -120,5 +121,63 @@ namespace Doppler.MercadoPagoApi
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.PaymentMethodId);
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Should_have_error_when_description_is_empty(string description)
+        {
+            // Arrange
+            var paymentRequestDto = new PaymentRequestDto { Description = description };
+
+            // Act
+            var result = _validator.TestValidate(paymentRequestDto);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(x => x.Description);
+        }
+
+        [Theory]
+        [InlineData("ValidDescription")]
+        public void Should_not_have_error_when_description_is_valid(string description)
+        {
+            // Arrange
+            var paymentRequestDto = new PaymentRequestDto { Description = description };
+
+            // Act
+            var result = _validator.TestValidate(paymentRequestDto);
+
+            // Assert
+            result.ShouldNotHaveValidationErrorFor(x => x.Description);
+        }
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Should_have_error_when_transaction_description_is_empty(string transactionDescription)
+        {
+            // Arrange
+            var paymentRequestDto = new PaymentRequestDto { TransactionDescription = transactionDescription };
+
+            // Act
+            var result = _validator.TestValidate(paymentRequestDto);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(x => x.TransactionDescription);
+        }
+
+        [Theory]
+        [InlineData("ValidTransactionDescription")]
+        public void Should_not_have_error_when_transaction_description_is_valid(string transactionDescription)
+        {
+            // Arrange
+            var paymentRequestDto = new PaymentRequestDto { TransactionDescription = transactionDescription };
+
+            // Act
+            var result = _validator.TestValidate(paymentRequestDto);
+
+            // Assert
+            result.ShouldNotHaveValidationErrorFor(x => x.TransactionDescription);
+        }
     }
 }
+

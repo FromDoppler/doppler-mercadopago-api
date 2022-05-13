@@ -1,3 +1,4 @@
+using Doppler.MercadoPagoApi.Models;
 using FluentValidation;
 
 namespace Doppler.MercadoPagoApi.Validators
@@ -15,6 +16,14 @@ namespace Doppler.MercadoPagoApi.Validators
                 .NotEmpty()
                 .Equal(1)
                 .WithMessage("Invalid or empty Installments");
+
+            RuleFor(x => x.Description)
+                .NotEmpty()
+                .WithMessage("Invalid or empty Description");
+
+            RuleFor(x => x.TransactionDescription)
+                .NotEmpty()
+                .WithMessage("Invalid or empty TransactionDescription");
 
             RuleFor(x => x.PaymentMethodId)
                 .NotEmpty()
