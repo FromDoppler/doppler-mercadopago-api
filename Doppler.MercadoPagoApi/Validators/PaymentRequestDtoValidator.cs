@@ -29,12 +29,12 @@ namespace Doppler.MercadoPagoApi.Validators
                 .NotEmpty()
                 .WithMessage("Invalid or empty PaymentMethodId")
                 .Custom((element, context) =>
-            {
-                if (element != "amex" && element != "visa" && element != "master")
                 {
-                    context.AddFailure("Invalid PaymentMethodId");
-                }
-            });
+                    if (element != "amex" && element != "visa" && element != "master")
+                    {
+                        context.AddFailure("Invalid PaymentMethodId");
+                    }
+                });
         }
     }
 }
