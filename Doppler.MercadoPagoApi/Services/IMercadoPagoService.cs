@@ -10,5 +10,6 @@ namespace Doppler.MercadoPagoApi.Services
     {
         Task<Payment> CreatePaymentAsync(PaymentCreateRequest paymentCreateRequest);
         Task<CardToken> CreateTokenAsync(CardDto card);
+        Task<Payment> GetPaymentAsync(long paymentId);
     }
 }

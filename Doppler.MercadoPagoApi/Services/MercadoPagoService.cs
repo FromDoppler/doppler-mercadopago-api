@@ -12,17 +12,17 @@ namespace Doppler.MercadoPagoApi.Services
     public class MercadoPagoService : IMercadoPagoService
     {
         private readonly IConfiguration _configuration;
+        private readonly PaymentClient _mercadoPagoPaymentClient;
 
-        public MercadoPagoService(IConfiguration configuration)
+        public MercadoPagoService(IConfiguration configuration, PaymentClient paymentClient)
         {
             _configuration = configuration;
+            _mercadoPagoPaymentClient = paymentClient;
         }
 
         public async Task<Payment> CreatePaymentAsync(PaymentCreateRequest paymentCreateRequest)
         {
-            var mercadoPagoPaymentClient = new PaymentClient();
-
-            var payment = await mercadoPagoPaymentClient.CreateAsync(paymentCreateRequest);
+            var payment = await _mercadoPagoPaymentClient.CreateAsync(paymentCreateRequest);
 
             return payment;
         }
@@ -35,6 +35,13 @@ namespace Doppler.MercadoPagoApi.Services
             var cardToken = await response.Content.ReadFromJsonAsync<CardToken>();
 
             return cardToken;
+        }
+
+        public async Task<Payment> GetPaymentAsync(long paymentId)
+        {
+            var payment = await _mercadoPagoPaymentClient.GetAsync(paymentId);
+
+            return payment;
         }
     }
 }
