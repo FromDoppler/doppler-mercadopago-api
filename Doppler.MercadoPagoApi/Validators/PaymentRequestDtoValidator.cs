@@ -10,7 +10,7 @@ namespace Doppler.MercadoPagoApi.Validators
             RuleFor(x => x.TransactionAmount)
                 .NotEmpty()
                 .GreaterThanOrEqualTo(0)
-                .WithMessage("Invalid or empty Installments");
+                .WithMessage("Invalid or empty TransactionAmount");
 
             RuleFor(x => x.Installments)
                 .NotEmpty()
