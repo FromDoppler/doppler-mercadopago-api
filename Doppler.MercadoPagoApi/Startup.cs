@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using Hellang.Middleware.ProblemDetails;
+using MercadoPago.Config;
+using FluentValidation.AspNetCore;
 
 namespace Doppler.MercadoPagoApi
 {
@@ -25,6 +28,7 @@ namespace Doppler.MercadoPagoApi
             services.AddProblemDetails();
             services.AddDopplerSecurity();
             services.AddControllers();
+            services.AddFluentValidation();
             services.AddCors();
             services.AddSingleton<IMercadoPagoService, MercadoPagoService>();
             services.AddSwaggerGen(c =>
