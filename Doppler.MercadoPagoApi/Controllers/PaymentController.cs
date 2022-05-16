@@ -63,5 +63,24 @@ namespace Doppler.MercadoPagoApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.ApiError);
             }
         }
+
+        [Authorize(Policies.OWN_RESOURCE_OR_SUPERUSER)]
+        [HttpGet("/accounts/{accountname}/payment/{id}")]
+        public async Task<IActionResult> Get([FromRoute] long id)
+        {
+            try
+            {
+                var result = await _mercadoPagoService.GetPaymentAsync(id);
+
+                return Ok(result);
+            }
+            catch (MercadoPagoApiException e)
+            {
+                if (e.StatusCode == StatusCodes.Status404NotFound)
+                    return NotFound(e.ApiError);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, e.ApiError);
+            }
+        }
     }
 }
