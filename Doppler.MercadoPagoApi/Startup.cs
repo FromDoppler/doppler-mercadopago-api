@@ -1,4 +1,5 @@
 using Doppler.MercadoPagoApi.Services;
+using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using MercadoPago.Client.Payment;
 using MercadoPago.Config;
@@ -8,9 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
-using Hellang.Middleware.ProblemDetails;
-using MercadoPago.Config;
-using FluentValidation.AspNetCore;
 
 namespace Doppler.MercadoPagoApi
 {
