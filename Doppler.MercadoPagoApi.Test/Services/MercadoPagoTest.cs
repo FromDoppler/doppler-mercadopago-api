@@ -25,6 +25,7 @@ namespace Doppler.MercadoPagoApi.Services
         private readonly WebApplicationFactory<Startup> _factory;
 
         private readonly PaymentRequestDto _paymentRequestDto;
+        private readonly Payment _payment;
         private readonly string _accountname;
         private readonly string _postUrl;
         private readonly string _getUrl;
@@ -60,6 +61,12 @@ namespace Doppler.MercadoPagoApi.Services
                     ExpirationMonth = "11",
                     ExpirationYear = "2025"
                 }
+            };
+            #endregion
+            #region payment Sample
+            _payment = new Payment
+            {
+                Payer = new PaymentPayer()
             };
             #endregion
         }
@@ -157,9 +164,11 @@ namespace Doppler.MercadoPagoApi.Services
         public async Task GET_getPayment_returns_OkStatusCode_when_paymentId_exists()
         {
             // Arrange
+            _payment.Payer.Email = _accountname;
+
             var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
             mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
-                .ReturnsAsync(new Payment());
+                .ReturnsAsync(_payment);
 
             var client = _factory.WithWebHostBuilder(builder =>
             {
@@ -225,6 +234,32 @@ namespace Doppler.MercadoPagoApi.Services
 
             // Assert
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GET_getPayment_returns_UnauthorizedStatusCode_when_accountName_is_notEqual_to_payerEmail()
+        {
+            // Arrange
+            _payment.Payer.Email = "different@email.com";
+
+            var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
+            mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
+                .ReturnsAsync(_payment);
+
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddSingleton(mercadoPagoServiceMock.Object);
+                });
+            }).CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
+
+            // Act
+            var response = await client.GetAsync(_getUrl);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
     }
 }
