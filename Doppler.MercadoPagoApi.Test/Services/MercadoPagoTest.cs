@@ -221,7 +221,7 @@ namespace Doppler.MercadoPagoApi.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
 
             // Act
-            var response = await client.PostAsJsonAsync(_postUrl, _paymentRequestDto);
+            var response = await client.GetAsync(_getUrl);
 
             // Assert
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
