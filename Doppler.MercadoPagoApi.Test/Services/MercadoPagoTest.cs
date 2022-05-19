@@ -34,7 +34,7 @@ namespace Doppler.MercadoPagoApi.Services
         public MercadoPagoTest(WebApplicationFactory<Startup> factory)
         {
             _factory = factory;
-            _accountname = "test1@test.com";
+            _accountname = "test1@example.com";
             _postUrl = $"/accounts/{_accountname}/payment";
             _getUrl = $"/accounts/{_accountname}/payment/1234567890";
             _cardToken = new CardToken { Id = "123asd" };
@@ -240,7 +240,7 @@ namespace Doppler.MercadoPagoApi.Services
         public async Task GET_getPayment_returns_UnauthorizedStatusCode_when_accountName_is_notEqual_to_payerEmail()
         {
             // Arrange
-            _payment.Payer.Email = "different@email.com";
+            _payment.Payer.Email = "different@example.com";
 
             var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
             mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
