@@ -66,11 +66,14 @@ namespace Doppler.MercadoPagoApi.Controllers
 
         [Authorize(Policies.OWN_RESOURCE_OR_SUPERUSER)]
         [HttpGet("/accounts/{accountname}/payment/{id}")]
-        public async Task<IActionResult> Get([FromRoute] long id)
+        public async Task<IActionResult> Get([FromRoute] string accountname, [FromRoute] long id)
         {
             try
             {
                 var result = await _mercadoPagoService.GetPaymentAsync(id);
+
+                if (result.Payer.Email != accountname)
+                    return Unauthorized();
 
                 return Ok(result);
             }
