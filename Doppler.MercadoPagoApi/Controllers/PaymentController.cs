@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace Doppler.MercadoPagoApi.Controllers
@@ -16,11 +17,13 @@ namespace Doppler.MercadoPagoApi.Controllers
     {
         private readonly IMercadoPagoService _mercadoPagoService;
         private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
-        public PaymentController(IMercadoPagoService mercadoPagoService, IConfiguration configuration)
+        public PaymentController(IMercadoPagoService mercadoPagoService, IConfiguration configuration, ILogger<PaymentController> logger)
         {
             _mercadoPagoService = mercadoPagoService;
             _configuration = configuration;
+            _logger = logger;
         }
 
         [Authorize(Policies.OWN_RESOURCE_OR_SUPERUSER)]
@@ -61,6 +64,7 @@ namespace Doppler.MercadoPagoApi.Controllers
             }
             catch (MercadoPagoApiException e)
             {
+                _logger.LogError("Failed at creating MercadoPago payment for user {accountname} with exception message: {message}.", accountname, e.ApiError.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, e.ApiError);
             }
         }
@@ -83,6 +87,7 @@ namespace Doppler.MercadoPagoApi.Controllers
                 if (e.StatusCode == StatusCodes.Status404NotFound)
                     return NotFound(e.ApiError);
 
+                _logger.LogError("Failed to get MercadoPago payment with id {id} for user {accountname} with exception message: {message}.", id, accountname, e.ApiError.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, e.ApiError);
             }
         }
