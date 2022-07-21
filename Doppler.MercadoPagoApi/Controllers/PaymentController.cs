@@ -3,6 +3,7 @@ using Doppler.MercadoPagoApi.Models;
 using Doppler.MercadoPagoApi.Services;
 using MercadoPago.Client.Payment;
 using MercadoPago.Error;
+using MercadoPago.Resource.Payment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +78,8 @@ namespace Doppler.MercadoPagoApi.Controllers
             {
                 var result = await _mercadoPagoService.GetPaymentAsync(id);
 
-                if (result.Payer.Email != accountname)
+                var resultWithEmail = result.Status is PaymentStatus.Approved or PaymentStatus.ChargedBack or PaymentStatus.Refunded;
+                if (result.Payer.Email != accountname && resultWithEmail)
                     return Unauthorized();
 
                 return Ok(result);
