@@ -236,11 +236,15 @@ namespace Doppler.MercadoPagoApi.Services
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
-        [Fact]
-        public async Task GET_getPayment_returns_UnauthorizedStatusCode_when_accountName_is_notEqual_to_payerEmail()
+        [Theory]
+        [InlineData("different@example.com", PaymentStatus.Approved)]
+        [InlineData("different@example.com", PaymentStatus.ChargedBack)]
+        [InlineData("different@example.com", PaymentStatus.Refunded)]
+        public async Task GET_getPayment_returns_UnauthorizedStatusCode_when_accountName_is_notEqual_to_payerEmail_and_payeremail_exists(string email, string status)
         {
             // Arrange
-            _payment.Payer.Email = "different@example.com";
+            _payment.Payer.Email = email;
+            _payment.Status = status;
 
             var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
             mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
@@ -261,5 +265,35 @@ namespace Doppler.MercadoPagoApi.Services
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
+
+        [Theory]
+        [InlineData("", PaymentStatus.Cancelled)]
+        [InlineData("", PaymentStatus.Rejected)]
+        public async Task GET_getPayment_returns_OkStatusCode_when_accountName_is_notEqual_to_payerEmail_and_payeremail_not_exists(string email, string status)
+        {
+            // Arrange
+            _payment.Payer.Email = email;
+            _payment.Status = status;
+
+            var mercadoPagoServiceMock = new Mock<IMercadoPagoService>();
+            mercadoPagoServiceMock.Setup(s => s.GetPaymentAsync(It.IsAny<long>()))
+                .ReturnsAsync(_payment);
+
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddSingleton(mercadoPagoServiceMock.Object);
+                });
+            }).CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN_SUPERUSER_VALID);
+
+            // Act
+            var response = await client.GetAsync(_getUrl);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
     }
 }
