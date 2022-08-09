@@ -27,7 +27,7 @@ namespace Doppler.MercadoPagoApi
             services.AddProblemDetails();
             services.AddDopplerSecurity();
             services.AddControllers();
-            services.AddFluentValidation();
+            services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
             services.AddCors();
             services.AddSingleton<IMercadoPagoService, MercadoPagoService>();
             services.AddSingleton<PaymentClient>();
