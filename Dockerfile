@@ -5,7 +5,7 @@ RUN yarn
 COPY . .
 RUN yarn verify-format
 
-FROM koalaman/shellcheck-alpine:v0.8.0 as verify-sh
+FROM koalaman/shellcheck-alpine:v0.9.0 as verify-sh
 WORKDIR /src
 COPY ./*.sh ./
 RUN shellcheck -e SC1091,SC1090 ./*.sh
