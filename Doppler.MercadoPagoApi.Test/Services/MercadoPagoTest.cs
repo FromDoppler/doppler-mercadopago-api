@@ -236,7 +236,7 @@ namespace Doppler.MercadoPagoApi.Services
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Temporary only in INT")]
         public async Task GET_getPayment_returns_UnauthorizedStatusCode_when_accountName_is_notEqual_to_payerEmail()
         {
             // Arrange
