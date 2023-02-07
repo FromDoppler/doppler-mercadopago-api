@@ -76,10 +76,10 @@ namespace Doppler.MercadoPagoApi.Controllers
                 //if (result.Payer.Email != accountname)
                 //    return Unauthorized();
 
-                //result.Status = "approved";
+                result.Status = "approved";
 
-                result.Status = "rejected";
-                result.StatusDetail = "cc_rejected_high_risk";
+                //result.Status = "rejected";
+                //result.StatusDetail = "cc_rejected_high_risk";
 
                 return Ok(result);
             }
