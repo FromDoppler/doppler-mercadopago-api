@@ -22,6 +22,7 @@
 Dockerfile
 Jenkinsfile
 .doppler-ci
+doppler-jenkins-ci.groovy
 yarn.lock
 package-lock.json
 [eE]ncrypted.[sS]ecret.*
