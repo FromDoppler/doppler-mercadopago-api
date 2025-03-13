@@ -34,7 +34,9 @@ namespace Doppler.MercadoPagoApi.Controllers
             try
             {
                 var cardToken = await _mercadoPagoService.CreateTokenAsync(paymentRequestDto.Card);
-                var template = $"{_configuration["MercadoPago:NotificationEndpoint"]}?source_news=webhooks";
+                var template = !paymentRequestDto.IsMontlhy ?
+                    $"{_configuration["MercadoPago:NotificationEndpoint"]}?source_news=webhooks" :
+                    $"{_configuration["MercadoPago:MonthlyNotificationEndpoint"]}?source_news=webhooks";
                 var webhookNotificationsOnlyEndpoint = template.Replace("{accountname}", accountname);
 
                 var paymentRequestCreated = new PaymentCreateRequest
