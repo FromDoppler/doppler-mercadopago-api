@@ -8,5 +8,6 @@ namespace Doppler.MercadoPagoApi.Models
         public int Installments { get; set; }
         public string PaymentMethodId { get; set; }
         public string Description { get; set; }
+        public bool IsMontlhy { get; set; }
     }
 }

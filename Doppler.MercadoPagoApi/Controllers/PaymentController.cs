@@ -34,7 +34,9 @@ namespace Doppler.MercadoPagoApi.Controllers
             try
             {
                 var cardToken = await _mercadoPagoService.CreateTokenAsync(paymentRequestDto.Card);
-                var template = $"{_configuration["MercadoPago:NotificationEndpoint"]}?source_news=webhooks";
+                var template = !paymentRequestDto.IsMontlhy ?
+                    $"{_configuration["MercadoPago:NotificationEndpoint"]}?source_news=webhooks" :
+                    $"{_configuration["MercadoPago:MonthlyNotificationEndpoint"]}?source_news=webhooks";
                 var webhookNotificationsOnlyEndpoint = template.Replace("{accountname}", accountname);
 
                 var paymentRequestCreated = new PaymentCreateRequest
@@ -77,11 +79,6 @@ namespace Doppler.MercadoPagoApi.Controllers
             try
             {
                 var result = await _mercadoPagoService.GetPaymentAsync(id);
-
-                var resultWithEmail = result.Status is PaymentStatus.Approved or PaymentStatus.ChargedBack or PaymentStatus.Refunded;
-                if (result.Payer.Email != accountname && resultWithEmail)
-                    return Unauthorized();
-
                 return Ok(result);
             }
             catch (MercadoPagoApiException e)
