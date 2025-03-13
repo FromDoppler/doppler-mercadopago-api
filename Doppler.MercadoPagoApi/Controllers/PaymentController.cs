@@ -79,11 +79,6 @@ namespace Doppler.MercadoPagoApi.Controllers
             try
             {
                 var result = await _mercadoPagoService.GetPaymentAsync(id);
-
-                var resultWithEmail = result.Status is PaymentStatus.Approved or PaymentStatus.ChargedBack or PaymentStatus.Refunded;
-                if (result.Payer.Email != accountname && resultWithEmail)
-                    return Unauthorized();
-
                 return Ok(result);
             }
             catch (MercadoPagoApiException e)
