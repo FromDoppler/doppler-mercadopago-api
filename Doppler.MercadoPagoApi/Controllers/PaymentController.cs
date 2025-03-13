@@ -48,6 +48,7 @@ namespace Doppler.MercadoPagoApi.Controllers
                     PaymentMethodId = paymentRequestDto.PaymentMethodId,
                     Payer = new PaymentPayerRequest
                     {
+                        Id = paymentRequestDto.PayerId,
                         Email = accountname,
                     },
                     Description = paymentRequestDto.Description,

@@ -2,6 +2,7 @@ namespace Doppler.MercadoPagoApi.Models
 {
     public class PaymentRequestDto
     {
+        public string PayerId { get; set; }
         public decimal TransactionAmount { get; set; }
         public string TransactionDescription { get; set; }
         public CardDto Card { get; set; }
