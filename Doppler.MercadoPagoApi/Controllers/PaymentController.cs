@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Doppler.MercadoPagoApi.Controllers
@@ -33,6 +34,8 @@ namespace Doppler.MercadoPagoApi.Controllers
         {
             try
             {
+                _logger.LogError($"Request: {JsonSerializer.Serialize(paymentRequestDto)}");
+
                 var cardToken = await _mercadoPagoService.CreateTokenAsync(paymentRequestDto.Card);
                 var template = !paymentRequestDto.IsMontlhy ?
                     $"{_configuration["MercadoPago:NotificationEndpoint"]}?source_news=webhooks" :
