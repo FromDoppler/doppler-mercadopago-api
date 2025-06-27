@@ -3,7 +3,7 @@
   "private": true,
   "devDependencies": {
     "eclint": "2.8.1",
-    "prettier": "3.6.1"
+    "prettier": "3.6.2"
   },
   "scripts": {
     "verify-format": "yarn prettier-check && yarn eclint-check",
